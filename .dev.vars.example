@@ -1,0 +1,4 @@
+# Copy to .dev.vars for local dev (npm run dev). Never commit .dev.vars.
+SUPABASE_URL=https://nzlnollwpzzgvpyrpcpa.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+DEVICE_API_KEY=pick-a-long-random-string
