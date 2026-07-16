@@ -53,8 +53,9 @@ export async function action({ request, context }: Route.ActionArgs) {
       gateway_id: body.gateway_id,
       sender_id: body.sender_id,
       sender_name: body.sender_name ?? "Unknown",
-      // Device sends local time with no zone; store as-is (adjust if you switch device to UTC)
-      ts: body.timestamp ?? new Date().toISOString(),
+      // Server-stamped UTC. The device's wall clock is ignored (its timezone
+      // config has drifted before); readings POST within seconds of arrival.
+      ts: new Date().toISOString(),
       flow_rate: body.flow_rate,
       volume: body.volume,
       rssi: body.rssi ?? null,

@@ -15,6 +15,12 @@ export async function loader({ context }: Route.LoaderArgs) {
   return { readings };
 }
 
+const fmtEdmonton = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "America/Edmonton",
+  dateStyle: "medium",
+  timeStyle: "medium",
+});
+
 export default function Home({ loaderData }: Route.ComponentProps) {
   const { readings } = loaderData as { readings: WaterReading[] };
 
@@ -26,6 +32,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <main className="mx-auto max-w-4xl p-6">
       <h1 className="text-2xl font-bold mb-6">Water Flow Dashboard</h1>
+      <p className="text-sm text-gray-500 mb-4">All times in Mountain Time (Edmonton)</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
         {[...bySender.values()].map((r) => (
@@ -36,7 +43,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               <span className="text-base font-normal">L/min</span>
             </div>
             <div className="text-sm text-gray-500">
-              Total {r.volume.toFixed(1)} L · {new Date(r.ts).toLocaleString()}
+              Total {r.volume.toFixed(1)} L · {fmtEdmonton.format(new Date(r.ts))}
             </div>
           </div>
         ))}
@@ -59,7 +66,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         <tbody>
           {readings.map((r) => (
             <tr key={r.id} className="border-b border-gray-100">
-              <td className="py-1.5">{new Date(r.ts).toLocaleString()}</td>
+              <td className="py-1.5">{fmtEdmonton.format(new Date(r.ts))}</td>
               <td>{r.sender_name}</td>
               <td className="text-right">{r.flow_rate.toFixed(2)}</td>
               <td className="text-right">{r.volume.toFixed(2)}</td>
